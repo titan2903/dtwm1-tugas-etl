@@ -1,10 +1,14 @@
 # Laporan Tugas — ETL Process
 
 **Nama:** Titanio Yudista
+
 **NIM:** 24120500031
+
 **Prodi:** Sains Data
+
 **Mata Kuliah:** Data Warehouse & Data Mining
-**Github:** [Link Github]()
+
+**Github:** [Link Github](https://github.com/titan2903/dtwm1-tugas-etl)
 
 ---
 
