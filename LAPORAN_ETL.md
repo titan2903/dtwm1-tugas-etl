@@ -4,6 +4,7 @@
 **NIM:** 24120500031
 **Prodi:** Sains Data
 **Mata Kuliah:** Data Warehouse & Data Mining
+**Github:** [Link Github]()
 
 ---
 
@@ -70,7 +71,6 @@ Pipeline ETL ini memindahkan data dari sumber-sumber OLTP dan eksternal ke sebua
 | Bahasa              | Python         | 3.12      | —   |
 | Koneksi DB          | psycopg2       | 2.x       | —   |
 | Manipulasi Data     | pandas         | 2.x       | —   |
-
 
 ```
 dtwm1-tugas-etl/
@@ -1244,18 +1244,18 @@ Visualisasi dibuat menggunakan **Metabase** yang terhubung ke database `warehous
 
 ---
 
-## Lampiran — File Referensi
+## Lampiran — File Referensi ada di Repository [Github](https://github.com/titan2903/dtwm1-tugas-etl)
 
-| File                      | Lokasi                                           | Deskripsi                            |
-| ------------------------- | ------------------------------------------------ | ------------------------------------ |
-| DAG Pipeline              | `dags/dag_retail_etl_student.py`                 | Implementasi ETL lengkap (20 tasks)  |
-| OLAP Schema DDL           | `include/sql/olap_schema.sql`                    | Migration script (9 tabel + 5 index) |
-| Query Analitik Lengkap    | `analytical_queries.md`                          | Semua query + link hasil PopSQL      |
-| OLTP Schema Image         | `tasks/oltp_db_schema.png`                       | Gambar ERD OLTP                      |
-| OLAP ERD Image            | `images/erd/OLAP ERD — Retail Star Schema.png`   | Gambar ERD OLAP dari dbdiagram.io    |
-| Airflow Graph             | `images/airflow/image.png`                       | Screenshot DAG Graph view            |
-| Airflow Run Summary       | `images/airflow/image_airflow_workflow.png`      | Screenshot DAG Runs Detail           |
-| Metabase Charts           | `images/data_visualisasi`                        | 6 screenshot visualisasi             |
+| File                   | Lokasi                                            | Deskripsi                            |
+| ---------------------- | ------------------------------------------------- | ------------------------------------ |
+| DAG Pipeline           | `dags/dag_retail_etl_student.py`                | Implementasi ETL lengkap (20 tasks)  |
+| OLAP Schema DDL        | `include/sql/olap_schema.sql`                   | Migration script (9 tabel + 5 index) |
+| Query Analitik Lengkap | `analytical_queries.md`                         | Semua query + link hasil PopSQL      |
+| OLTP Schema Image      | `tasks/oltp_db_schema.png`                      | Gambar ERD OLTP                      |
+| OLAP ERD Image         | `images/erd/OLAP ERD — Retail Star Schema.png` | Gambar ERD OLAP dari dbdiagram.io    |
+| Airflow Graph          | `images/airflow/image.png`                      | Screenshot DAG Graph view            |
+| Airflow Run Summary    | `images/airflow/image_airflow_workflow.png`     | Screenshot DAG Runs Detail           |
+| Metabase Charts        | `images/data_visualisasi`                       | 6 screenshot visualisasi             |
 
 ---
 
