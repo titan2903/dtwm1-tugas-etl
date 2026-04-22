@@ -1,0 +1,22 @@
+# -----------------------------------------------------------------------------
+# Purpose: Exclude unnecessary files from Docker build context.
+# -----------------------------------------------------------------------------
+
+.git
+.gitignore
+.idea
+.env
+.venv
+logs
+__pycache__
+*.pyc
+*.pyo
+*.log
+*.pid
+.mypy_cache
+.ruff_cache
+dist
+tests
+tasks
+docs
+README.md

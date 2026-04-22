@@ -1,0 +1,16 @@
+# -----------------------------------------------------------------------------
+# Purpose: Project metadata and static analysis tool configuration.
+# -----------------------------------------------------------------------------
+
+[project]
+name = "etl-project"
+version = "0.1.0"
+requires-python = ">=3.12"
+
+[tool.ruff]
+line-length = 88
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+ignore_missing_imports = true
+python_version = "3.12"

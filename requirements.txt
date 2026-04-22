@@ -1,0 +1,13 @@
+# -----------------------------------------------------------------------------
+# Purpose: Additional Python dependencies installed into the Airflow image.
+# Note   : Versions are constrained by Airflow 2.9.3 compatibility.
+#          Do NOT add sqlalchemy here — Airflow manages its own SQLAlchemy.
+# -----------------------------------------------------------------------------
+
+apache-airflow-providers-postgres>=5.0.0
+apache-airflow-providers-http>=4.0.0
+pandas>=2.0.0
+psycopg2-binary>=2.9.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+requests>=2.31.0

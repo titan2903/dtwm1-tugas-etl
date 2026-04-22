@@ -1,0 +1,130 @@
+# -----------------------------------------------------------------------------
+# Purpose: Local orchestration for Airflow, PostgreSQL, and Metabase services.
+# -----------------------------------------------------------------------------
+
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile
+  env_file:
+    - .env
+  environment:
+    AIRFLOW__CORE__EXECUTOR: ${AIRFLOW__CORE__EXECUTOR}
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: ${AIRFLOW__DATABASE__SQL_ALCHEMY_CONN}
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
+    AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
+  user: "${AIRFLOW_UID:-50000}:0"
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./plugins:/opt/airflow/plugins
+    - ./include:/opt/airflow/include
+    - ./logs:/opt/airflow/logs
+    - ./scripts:/opt/airflow/scripts
+  networks:
+    - etl_network
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: etl-postgres
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/01-init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - etl_network
+
+  airflow-init:
+    <<: *airflow-common
+    container_name: etl-airflow-init
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command:
+      - bash
+      - -c
+      - |
+        airflow db upgrade &&
+        airflow users create \
+          --username "$${AIRFLOW_ADMIN_USER}" \
+          --password "$${AIRFLOW_ADMIN_PASSWORD}" \
+          --firstname Airflow \
+          --lastname Admin \
+          --role Admin \
+          --email "$${AIRFLOW_ADMIN_EMAIL}" \
+        || true
+    restart: on-failure
+
+  airflow-webserver:
+    <<: *airflow-common
+    container_name: etl-airflow-webserver
+    command: webserver
+    ports:
+      - "8080:8080"
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: etl-airflow-scheduler
+    command: scheduler
+    depends_on:
+      airflow-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: etl-metabase
+    env_file:
+      - .env
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: ${MB_DB_DBNAME}
+      MB_DB_USER: ${MB_DB_USER}
+      MB_DB_PASS: ${MB_DB_PASS}
+      MB_DB_HOST: ${MB_DB_HOST}
+      MB_DB_PORT: ${MB_DB_PORT}
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - metabase_data:/metabase-data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - etl_network
+
+volumes:
+  postgres_data:
+    name: etl_postgres_data
+  metabase_data:
+    name: etl_metabase_data
+
+networks:
+  etl_network:
+    name: etl_network
+    driver: bridge
