@@ -9,7 +9,7 @@ Purpose: Main project documentation for local ETL stack setup and development.
 This project provides a production-aware ETL scaffold using Apache Airflow,
 PostgreSQL, and Metabase, fully containerized with Docker Compose.
 
-Detailed documentation and project report can be found in [LAPORAN_ETL.md](LAPORAN_ETL.md).
+Detailed documentation and project report can be found in [LAPORAN_ETL.md](LAPORAN_ETL.md) or [Titanio Yudista - Laporan Tugas ETL.pdf](Titanio%20Yudista%20-%20Laporan%20Tugas%20ETL.pdf).
 
 ## Architecture
 
@@ -26,6 +26,7 @@ flowchart LR
 
 ```text
 etl-project/
+├── .github/                       ← PR templates
 ├── dags/
 │   └── dag_retail_etl_student.py    ← Main ETL Pipeline
 ├── images/
@@ -33,6 +34,7 @@ etl-project/
 │   ├── data_visualisasi/            ← Metabase visualization screenshots
 │   └── erd/                         ← OLAP ERD images
 ├── include/
+│   ├── schemas/                     ← JSON schemas for data validation
 │   └── sql/
 │       └── olap_schema.sql          ← OLAP Star Schema DDL (marts layer)
 ├── docs/
@@ -42,11 +44,14 @@ etl-project/
 ├── tasks/
 │   ├── 📚 Tugas — ETL Process.md
 │   └── oltp_db_schema.png
+├── plugins/                       ← Custom Airflow plugins
+├── tests/                         ← Unit and integration tests
 ├── scripts/
 │   ├── init-db.sql                ← Creates databases & mart schemas on first boot
 │   └── entrypoint.sh
 ├── analytical_queries.md            ← Full analytical queries & justification
 ├── LAPORAN_ETL.md                   ← Project Report (Bahasa Indonesia)
+├── Titanio Yudista - Laporan Tugas ETL.pdf  ← Project Report (PDF version)
 ├── Dockerfile
 ├── docker-compose.yaml
 ├── .env.example
